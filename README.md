@@ -84,5 +84,6 @@
     3. display order details
 19. Create Register Screen
     1. add signup api
-    2. create register page
+    2. create new account page
     3. call api on form submit
+    4. Update UI part
