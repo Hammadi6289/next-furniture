@@ -87,3 +87,12 @@
     2. create new account page
     3. call api on form submit
     4. Update UI part
+20. PayPal API integration
+    1. add paypal button
+    2. handle payment
+    3. create backend api
+    4. update order state
+21. Create Order History Screen
+    1. create order history api
+    2. create order history component
+    3. fetch orders and display them

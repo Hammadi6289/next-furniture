@@ -108,8 +108,31 @@ a {
   }
 }
 
+/* Adjust image size for smaller devices */
+@media (max-width: 608px) {
+  .card img {
+    max-width: 80%; /* Adjust to 100% of container width */
+    max-height: 350px; /* Set a fixed height for smaller devices */
+  }
+}
+
 .card {
-  @apply mb-4 block rounded-lg border border-gray-100 shadow-md;
+  @apply mb-8 block rounded-lg shadow-md border border-gray-200 transition-transform duration-300 ease-in-out;
+}
+
+.card:hover {
+  @apply transform scale-105; /* Apply scale effect on hover */
+}
+
+.card img {
+  @apply w-full h-full object-cover object-center transition-opacity duration-300 ease-in-out;
+
+  /* Add a subtle overlay on hover */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover img {
+  opacity: 0.8; /* Reduce opacity on hover */
 }
 
 .primary-button {

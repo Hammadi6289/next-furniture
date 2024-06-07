@@ -1,3 +1,4 @@
+import Hero from "@/components/Hero";
 import Layout from "@/components/Layout";
 import ProductItem from "@/components/ProductItem";
 import Product from "@/models/Product";
@@ -25,8 +26,10 @@ export default function Home({ products }) {
   };
 
   return (
-    <Layout title="Home Page">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <Layout title="Home">
+      <Hero />
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductItem
             product={product}
