@@ -1,6 +1,8 @@
-import Order from "@/models/Order";
-import db from "@/utils/db";
+//import Order from "@/models/Order";
+//import db from "@/utils/db";
 import { getSession } from "next-auth/react";
+import Order from "../../../../models/Order";
+import db from "../../../../utils/db";
 
 const getOrderByIdHandler = async (req, res) => {
   try {

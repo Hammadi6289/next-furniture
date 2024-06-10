@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import { useEffect, useReducer } from "react";
 import Layout from "../../components/Layout";
 import { getError } from "../../utils/error";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+//import { StripeButton } from "@stripe/react-stripe-js";
+import { toast } from "react-toastify";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -14,21 +17,32 @@ function reducer(state, action) {
       return { ...state, loading: false, order: action.payload, error: "" };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
+    case "PAY_REQUEST":
+      return { ...state, loadingPay: true };
+    case "PAY_SUCCESS":
+      return { ...state, loadingPay: false, successPay: true };
+    case "PAY_FAIL":
+      return { ...state, loadingPay: false, errorPay: action.payload };
+    case "PAY_RESET":
+      return { ...state, loadingPay: false, successPay: false, errorPay: "" };
     default:
       return state;
   }
 }
 
 function OrderScreen() {
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
   // Extract order ID from router query
   const { query } = useRouter();
   const orderId = query.id;
 
-  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
-    loading: true,
-    order: {},
-    error: "",
-  });
+  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      order: {},
+      error: "",
+    });
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -41,10 +55,26 @@ function OrderScreen() {
       }
     };
 
-    if (!order._id || (order._id && order._id !== orderId)) {
+    if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
+      if (successPay) {
+        dispatch({ type: "PAY_RESET" });
+      }
+    } else {
+      const loadPaypalScript = async () => {
+        const { data: clientId } = await axios.get("/api/keys/paypal");
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": clientId,
+            currency: "PKR",
+          },
+        });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+      loadPaypalScript();
     }
-  }, [order, orderId]);
+  }, [order, orderId, paypalDispatch, successPay]);
 
   const {
     shippingAddress,
@@ -59,6 +89,44 @@ function OrderScreen() {
     isDelivered,
     deliveredAt,
   } = order;
+
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: totalPrice },
+          },
+        ],
+      })
+      .then((orderID) => {
+        return orderID;
+      });
+  }
+
+  function onApprove(data, actions) {
+    /**
+     * Function to Confirm, Commit, Complete the Payment
+     */
+
+    return actions.order.capture().then(async function (details) {
+      try {
+        dispatch({ type: "PAY_REQUEST" });
+        const { data } = await axios.put(
+          `/api/orders/${order._id}/pay`,
+          details
+        );
+        dispatch({ type: "PAY_SUCCESS", payload: data });
+        toast.success("Order is paid successfully");
+      } catch (err) {
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
+        toast.error(getError(err));
+      }
+    });
+  }
+  function onError(err) {
+    toast.error(getError(err));
+  }
 
   return (
     <Layout title={`Order ${orderId}`}>
@@ -126,9 +194,9 @@ function OrderScreen() {
                         </Link>
                       </td>
                       <td className="px-5 py-3 text-right">{item.quantity}</td>
-                      <td className="px-5 py-3 text-right">PKR{item.price}</td>
+                      <td className="px-5 py-3 text-right">Rs {item.price}</td>
                       <td className="px-5 py-3 text-right">
-                        PKR{item.quantity * item.price}
+                        Rs{item.quantity * item.price}
                       </td>
                     </tr>
                   ))}
@@ -142,20 +210,38 @@ function OrderScreen() {
               <ul>
                 <li className="mb-2 flex justify-between">
                   <div>Items</div>
-                  <div>PKR{itemsPrice}</div>
+                  <div>Rs{itemsPrice}</div>
                 </li>
                 <li className="mb-2 flex justify-between">
                   <div>Tax</div>
-                  <div>PKR{taxPrice}</div>
+                  <div>Rs{taxPrice}</div>
                 </li>
                 <li className="mb-2 flex justify-between">
                   <div>Shipping</div>
-                  <div>PKR{shippingPrice}</div>
+                  <div>Rs{shippingPrice}</div>
                 </li>
                 <li className="mb-2 flex justify-between">
                   <div>Total</div>
-                  <div>PKR{totalPrice}</div>
+                  <div>Rs{totalPrice}</div>
                 </li>
+                {!isPaid && (
+                  <li>
+                    {isPending ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <div className="w-full">
+                        {paymentMethod === "paypal" && (
+                          <PayPalButtons
+                            createOrder={createOrder}
+                            onApprove={onApprove}
+                            onError={onError}
+                          ></PayPalButtons>
+                        )}
+                      </div>
+                    )}
+                    {loadingPay && <div>Loading...</div>}
+                  </li>
+                )}
               </ul>
             </div>
           </div>

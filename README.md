@@ -87,3 +87,32 @@
     2. create new account page
     3. call api on form submit
     4. Update UI part
+20. PayPal API integration
+    1. add paypal button
+    2. handle payment
+    3. create backend api
+    4. update order state
+21. Create Order History Screen
+    1. create order history api
+    2. create order history component
+    3. fetch orders and display them
+22. Update User Profile
+    1. create profile screen
+    2. show user info
+    3. handle update user info
+23. Create Admin Dashboard
+    1. Create Admin Menu
+    2. create dashboard screen
+    3. Implement admin summary api
+24. List Orders For Admin
+    1. create orders page
+    2. create orders api
+    3. use api in page
+25. List Products For Admin
+    1. create products page
+    2. create products api
+    3. use api in page
+26. Create Product Edit Page
+    1. create Product edit page
+    2. create api for product
+    3. show product data in form
