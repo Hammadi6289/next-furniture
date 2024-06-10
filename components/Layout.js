@@ -108,7 +108,7 @@ export default function Layout({ title, children }) {
                           }`}
                           href="/profile"
                         >
-                          Profile
+                          My Profile
                         </DropdownLink>
                       )}
                     </Menu.Item>
@@ -124,6 +124,16 @@ export default function Layout({ title, children }) {
                         </DropdownLink>
                       )}
                     </Menu.Item>
+                    {session.user.isAdmin && (
+                      <Menu.Item>
+                        <DropdownLink
+                          className="dropdown-link"
+                          href="/admin/dashboard"
+                        >
+                          Admin Dashboard
+                        </DropdownLink>
+                      </Menu.Item>
+                    )}
                     <Menu.Item as="div">
                       {({ active }) => (
                         <a
