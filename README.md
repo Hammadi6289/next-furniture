@@ -116,3 +116,8 @@
     1. create Product edit page
     2. create api for product
     3. show product data in form
+27. Create And Delete Products
+    1. add create product button
+    2. build new product api
+    3. add handler for delete
+    4. implement delete api
