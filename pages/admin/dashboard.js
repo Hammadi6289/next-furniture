@@ -96,7 +96,9 @@ const AdminDashboardScreen = () => {
           </ul>
         </div>
         <div className="md:col-span-3">
-          <h1 className="mb-4 text-xl">Admin Dashboard</h1>
+          <h1 className="mb-6 mt-4 text-3xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300 shadow-sm">
+            Admin Dashboard
+          </h1>
           {loading ? (
             <div>Loading...</div>
           ) : error ? (

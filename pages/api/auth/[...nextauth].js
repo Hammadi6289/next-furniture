@@ -10,11 +10,13 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log("JWT Callback:", { token, user });
       if (user?._id) token._id = user._id;
       if (user?.isAdmin) token.isAdmin = user.isAdmin;
       return token;
     },
     async session({ session, token }) {
+      console.log("Session Callback:", { session, token });
       if (token?._id) session.user._id = token._id;
       if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
       return session;

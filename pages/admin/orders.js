@@ -68,8 +68,8 @@ const AdminOrderScreen = () => {
           </ul>
         </nav>
         <div className="overflow-x-auto md:col-span-3">
-          <h1 className="mb-4 text-2xl font-semibold text-gray-800">
-            Admin Orders
+          <h1 className="mb-6 mt-4 text-3xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300 shadow-sm">
+            Orders
           </h1>
 
           {loading ? (
