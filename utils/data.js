@@ -34,6 +34,8 @@ const data = {
       numReviews: 8,
       countInStock: 20,
       description: "A popular center table design",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
     {
       name: "Center Table",
@@ -46,6 +48,8 @@ const data = {
       numReviews: 10,
       countInStock: 20,
       description: "Simple vintage table",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
     {
       name: "Wooden Chair",
@@ -58,6 +62,8 @@ const data = {
       numReviews: 3,
       countInStock: 20,
       description: "Soft foamic comfortable wooden chair",
+      isFeatured: true,
+      banner: "/images/banner1.png",
     },
     {
       name: "Wooden Chair",
@@ -70,6 +76,8 @@ const data = {
       numReviews: 3,
       countInStock: 20,
       description: "Soft foamic comfortable wooden chair",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
     {
       name: "Dining Table",
@@ -82,6 +90,8 @@ const data = {
       numReviews: 13,
       countInStock: 20,
       description: "One is the thousand Dining Table",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
     {
       name: "Single Bed",
@@ -94,6 +104,8 @@ const data = {
       numReviews: 7,
       countInStock: 1,
       description: "Beautiful Handmade single bed without cusioning",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
     {
       name: "TV Lounge Sofa",
@@ -106,6 +118,8 @@ const data = {
       numReviews: 14,
       countInStock: 2,
       description: "Sofa for the whole family",
+      isFeatured: false, // Ensure consistency by adding this property
+      banner: null, // Ensure consistency by adding this property
     },
   ],
 };

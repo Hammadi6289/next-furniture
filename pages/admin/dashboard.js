@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import axios from "axios";
 import { getError } from "@/utils/error";
+import DashboardCard from "./DashboardCard;";
 
 ChartJS.register(
   CategoryScale,
@@ -76,9 +77,10 @@ const AdminDashboardScreen = () => {
 
   return (
     <Layout title="Admin Panel">
-      <div className="grid  md:grid-cols-4 md:gap-5">
-        <div>
-          <ul>
+      <div className="grid  md:grid-cols-2 md:gap-5">
+        {/*
+        <div className="bg-gray-100 p-5 rounded-lg shadow-lg">
+          <ul className="space-y-6">
             <li>
               <Link href="/admin/dashboard" className="font-bold text-blue-700">
                 Dashboard
@@ -95,6 +97,7 @@ const AdminDashboardScreen = () => {
             </li>
           </ul>
         </div>
+        */}
         <div className="md:col-span-3">
           <h1 className="mb-6 mt-4 text-3xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300 shadow-sm">
             Admin Dashboard
@@ -105,45 +108,45 @@ const AdminDashboardScreen = () => {
             <div className="alert-error">{error}</div>
           ) : (
             <div>
-              <div className="grid grid-cols-1 md:grid-cols-4">
-                <div className="card m-5 p-5">
-                  <p className="text-3xl">${summary.ordersPrice} </p>
-                  <p>Sales</p>
-                  <Link href="/admin/orders">View sales</Link>
-                </div>
-                <div className="card m-5 p-5">
-                  <p className="text-3xl">{summary.ordersCount} </p>
-                  <p>Orders</p>
-                  <Link href="/admin/orders">View orders</Link>
-                </div>
-                <div className="card m-5 p-5">
-                  <p className="text-3xl">{summary.productsCount} </p>
-                  <p>Catalogs</p>
-                  <Link href="/admin/products">View Catalogue</Link>
-                </div>
-                <div className="card m-5 p-5">
-                  <p className="text-3xl">{summary.usersCount} </p>
-                  <p>Users</p>
-                  <Link href="/admin/users">View users</Link>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <DashboardCard
+                  value={summary.ordersPrice}
+                  label="Sales"
+                  link="/admin/orders"
+                />
+                <DashboardCard
+                  value={summary.ordersCount}
+                  label="Orders"
+                  link="/admin/orders"
+                />
+                <DashboardCard
+                  value={summary.productsCount}
+                  label="Catalogs"
+                  link="/admin/products"
+                />
+                <DashboardCard
+                  value={summary.usersCount}
+                  label="Users"
+                  link="/admin/users"
+                />
               </div>
-              <div className="sales-report">
+              <div className="sales-report mt-8">
                 <h2 className="text-2xl font-bold mb-4">Sales Report</h2>
                 <div className="chart-container">
                   <Bar
                     options={{
-                      maintainAspectRatio: false, // Allow the chart to resize based on the container
+                      maintainAspectRatio: false,
                       plugins: {
-                        legend: { display: true, position: "bottom" }, // Move legend to the bottom for better readability
+                        legend: { display: true, position: "bottom" },
                       },
                       scales: {
                         x: {
-                          grid: { display: false }, // Hide horizontal grid lines for cleaner appearance
-                          title: { display: true, text: "Months" }, // Add title to x-axis for clarity
+                          grid: { display: false },
+                          title: { display: true, text: "Months" },
                         },
                         y: {
-                          grid: { color: "rgba(0, 0, 0, 0.1)" }, // Add subtle grid lines to y-axis for reference
-                          title: { display: true, text: "Sales Amount ($)" }, // Add title to y-axis for clarity
+                          grid: { color: "rgba(0, 0, 0, 0.1)" },
+                          title: { display: true, text: "Sales Amount ($)" },
                         },
                       },
                     }}

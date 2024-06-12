@@ -41,7 +41,7 @@ const AdminOrderScreen = () => {
     <Layout title="Admin Dashboard">
       <div className="grid md:grid-cols-4 md:gap-5 p-4">
         <nav className=" text-white p-4 rounded-md">
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             <li>
               <Link href="/admin/dashboard" className="hover:text-gray-400">
                 Dashboard

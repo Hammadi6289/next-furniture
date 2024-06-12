@@ -18,12 +18,12 @@ const handler = async (req, res) => {
 const postHandler = async (req, res) => {
   await db.connect();
   const newProduct = new Product({
-    name: "sample name",
-    slug: "sample-name-" + Math.random(),
+    name: "Catalogue name",
+    slug: "Cata-" + Math.random(),
     image: "/images/SOFA DRAWING1.jpg",
     price: 0,
     category: "sample category",
-    brand: "sample brand",
+    brand: "Mr. Furniture",
     countInStock: 0,
     description: "sample description",
     rating: 0,
@@ -31,7 +31,7 @@ const postHandler = async (req, res) => {
   });
   const product = await newProduct.save();
   await db.disconnect();
-  res.send({ message: "Product created successfully", product });
+  res.send({ message: "Item created successfully", product });
 };
 
 const getHandler = async (req, res) => {

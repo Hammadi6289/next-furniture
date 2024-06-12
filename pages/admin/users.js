@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useReducer } from "react";
 import Link from "next/link";
-import Layout from "../../components/Layout";
-import { getError } from "../../utils/error";
+import React, { useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import Layout from "../../components/Layout";
+import { getError } from "../../utils/error";
 import { FaPlus } from "react-icons/fa";
 
 function reducer(state, action) {
@@ -12,7 +12,7 @@ function reducer(state, action) {
     case "FETCH_REQUEST":
       return { ...state, loading: true, error: "" };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, products: action.payload, error: "" };
+      return { ...state, loading: false, users: action.payload, error: "" };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     case "CREATE_REQUEST":
@@ -33,27 +33,28 @@ function reducer(state, action) {
       return state;
   }
 }
-const AdminProductScreen = () => {
+
+function AdminUsersScreen() {
   const router = useRouter();
   const [
-    { loading, loadingCreate, loadingDelete, successDelete, error, products },
+    { loading, error, users, loadingCreate, successDelete, loadingDelete },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
-    products: [],
+    users: [],
     error: "",
   });
 
   const createHandler = async () => {
-    if (!window.confirm("Are you Sure")) {
+    if (!window.confirm("Are you sure?")) {
       return;
     }
     try {
       dispatch({ type: "CREATE_REQUEST" });
-      const { data } = await axios.post(`/api/admin/products`);
+      const { data } = await axios.post(`/api/admin/users`);
       dispatch({ type: "CREATE_SUCCESS" });
-      toast.success("Catalog created successfully");
-      router.push(`/admin/product/${data.product._id}`);
+      toast.success("User created successfully");
+      router.push(`/admin/user/${data.user._id}`);
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
@@ -64,7 +65,7 @@ const AdminProductScreen = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/admin/products`);
+        const { data } = await axios.get(`/api/admin/users`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
@@ -77,15 +78,15 @@ const AdminProductScreen = () => {
     }
   }, [successDelete]);
 
-  const deleteHandler = async (productId) => {
-    if (!window.confirm("Are you Sure to delete this Item from Catalog?")) {
+  const deleteHandler = async (userId) => {
+    if (!window.confirm("Are you sure?")) {
       return;
     }
     try {
       dispatch({ type: "DELETE_REQUEST" });
-      await axios.delete(`/api/admin/products/${productId}`);
+      await axios.delete(`/api/admin/users/${userId}`);
       dispatch({ type: "DELETE_SUCCESS" });
-      toast.success("Item deleted successfully");
+      toast.success("User deleted successfully");
     } catch (err) {
       dispatch({ type: "DELETE_FAIL" });
       toast.error(getError(err));
@@ -93,35 +94,47 @@ const AdminProductScreen = () => {
   };
 
   return (
-    <Layout title="Admin Products">
+    <Layout title="Users">
       <div className="grid md:grid-cols-4 md:gap-5">
-        <div className="bg-gray-100 p-5 rounded-lg shadow-lg">
-          <ul className="space-y-6">
-            <li className="mb-2">
-              <Link href="/admin/dashboard" className="hover:text-blue-700">
-                Dashboard
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link href="/admin/orders" className="hover:text-blue-700">
-                Orders
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link href="/admin/products" className="font-bold text-blue-700">
-                Catalogs
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link href="/admin/users" className="hover:text-blue-700">
-                Users
-              </Link>
-            </li>
-          </ul>
+        <div className="md:col-span-1">
+          <div className="bg-gray-100 p-5 rounded-lg shadow-lg">
+            <ul className="space-y-6">
+              <li>
+                <Link href="/admin/dashboard" className=" hover:underline">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/orders" className=" hover:underline">
+                  Orders
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/products" className=" hover:underline">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/users"
+                  className="font-bold text-blue-800 hover:underline"
+                >
+                  Users
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* ////////////////// --*/}
+          {/* ////////////////// --*/}
+          {/* ////////////////// --*/}
+          {/* ////////////////// --*/}
+          {/* ////////////////// --*/}
         </div>
-        <div className="overflow-x-auto md:col-span-3">
+
+        <div className="md:col-span-3">
           <h1 className="mb-6 mt-4 text-3xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300 shadow-sm">
-            Catalogs
+            Users
           </h1>
           {loadingDelete && <div>Deleting item...</div>}
           <div className="flex justify-end p-8 mb-8 mt-2">
@@ -159,66 +172,49 @@ const AdminProductScreen = () => {
               ) : (
                 <span className="flex items-center">
                   <FaPlus className="mr-2" />
-                  Add new Catalogue
+                  Add new User
                 </span>
               )}
             </button>
           </div>
-
           {loading ? (
-            <div className="flex justify-center items-center h-full">
-              Loading...
-            </div>
+            <div className="text-gray-700">Loading...</div>
           ) : error ? (
-            <div className="alert-error bg-red-100 text-red-700 p-4 rounded-lg shadow-md">
-              {error}
-            </div>
+            <div className="alert-error">{error}</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white rounded-lg shadow-lg">
-                <thead className="border-b-2 border-gray-300">
-                  <tr>
-                    <th className="px-5 py-3 text-left text-gray-600">ID</th>
-                    <th className="px-5 py-3 text-left text-gray-600">NAME</th>
-                    <th className="px-5 py-3 text-left text-gray-600">PRICE</th>
-                    <th className="px-5 py-3 text-left text-gray-600">
-                      CATEGORY
-                    </th>
-                    <th className="px-5 py-3 text-left text-gray-600">COUNT</th>
-                    <th className="px-5 py-3 text-left text-gray-600">
-                      RATING
-                    </th>
-                    <th className="px-5 py-3 text-left text-gray-600">
-                      ACTIONS
-                    </th>
+              <table className="w-full table-fixed">
+                <thead>
+                  <tr className="border-b">
+                    <th className="w-1/6 px-4 py-2 text-left">ID</th>
+                    <th className="w-1/4 px-4 py-2 text-left">NAME</th>
+                    <th className="w-1/4 px-4 py-2 text-left">EMAIL</th>
+                    <th className="w-1/6 px-4 py-2 text-left">ADMIN</th>
+                    <th className="w-1/6 px-4 py-2 text-left">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr
-                      key={product._id}
-                      className="border-b border-gray-200 hover:bg-gray-50"
-                    >
-                      <td className="px-5 py-3">
-                        {product._id.substring(18, 24)}
+                  {users.map((user) => (
+                    <tr key={user._id} className="border-b">
+                      <td className="px-4 py-2">
+                        {user._id.substring(20, 24)}
                       </td>
-                      <td className="px-5 py-3">{product.name}</td>
-                      <td className="px-5 py-3">${product.price}</td>
-                      <td className="px-5 py-3">{product.category}</td>
-                      <td className="px-5 py-3">{product.countInStock}</td>
-                      <td className="px-5 py-3">{product.rating}</td>
-                      <td className="px-5 py-3 flex space-x-2">
+                      <td className="px-4 py-2">{user.name}</td>
+                      <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">
+                        {user.isAdmin ? "YES" : "NO"}
+                      </td>
+                      <td className="px-4 py-2">
                         <Link
-                          href={`/admin/product/${product._id}`}
-                          type="button"
-                          className="inline-block px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md transition duration-300"
+                          href={`/admin/user/${user._id}`}
+                          passHref
+                          className="inline-block px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md transition duration-300 mr-2"
                         >
                           Edit
                         </Link>
                         <button
+                          onClick={() => deleteHandler(user._id)}
                           className="inline-block px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md shadow-md transition duration-300"
-                          onClick={() => deleteHandler(product._id)}
-                          type="button"
                         >
                           Delete
                         </button>
@@ -233,8 +229,7 @@ const AdminProductScreen = () => {
       </div>
     </Layout>
   );
-};
+}
 
-AdminProductScreen.auth = { adminOnly: true };
-
-export default AdminProductScreen;
+AdminUsersScreen.auth = { adminOnly: true };
+export default AdminUsersScreen;

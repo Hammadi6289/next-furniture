@@ -20,9 +20,9 @@ function reducer(state, action) {
   }
 }
 
-const AdminProductEditScreen = () => {
+const AdminUserEditScreen = () => {
   const { query } = useRouter();
-  const productId = query.id;
+  const userId = query.id;
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -39,23 +39,18 @@ const AdminProductEditScreen = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/admin/products/${productId}`);
+        const { data } = await axios.get(`/api/admin/users/${userId}`);
         dispatch({ type: "FETCH_SUCCESS" });
         setValue("name", data.name);
-        setValue("slug", data.slug);
-        setValue("price", data.price);
-        setValue("image", data.image);
-        setValue("category", data.category);
-        setValue("brand", data.brand);
-        setValue("countInStock", data.countInStock);
-        setValue("description", data.description);
+        setValue("email", data.email);
+        setValue("password", data.password);
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
 
     fetchData();
-  }, [productId, setValue]);
+  }, [userId, setValue]);
 
   const router = useRouter();
 
@@ -71,7 +66,7 @@ const AdminProductEditScreen = () => {
   }) => {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      await axios.put(`/api/admin/products/${productId}`, {
+      await axios.put(`/api/admin/users/${userId}`, {
         name,
         slug,
         price,
@@ -91,7 +86,7 @@ const AdminProductEditScreen = () => {
   };
 
   return (
-    <Layout title={`Edit Product ${productId}`}>
+    <Layout title={`Edit User ${userId}`}>
       <div className="grid md:grid-cols-4 md:gap-5">
         <div className="bg-white p-4 rounded-md shadow-md">
           <ul className="space-y-2">
@@ -142,7 +137,7 @@ const AdminProductEditScreen = () => {
               className="mx-auto max-w-screen-md bg-white p-6 rounded-md shadow-md"
               onSubmit={handleSubmit(submitHandler)}
             >
-              <h1 className="mb-6 text-2xl font-semibold text-gray-800">{`Edit catalogue # ${productId}`}</h1>
+              <h1 className="mb-6 text-2xl font-semibold text-gray-800">{`Edit User: ${userId}`}</h1>
               <div className="mb-4">
                 <label
                   htmlFor="name"
@@ -207,121 +202,7 @@ const AdminProductEditScreen = () => {
                   </div>
                 )}
               </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="image"
-                  className="block mb-1 text-sm text-gray-600"
-                >
-                  Image
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  id="image"
-                  {...register("image", {
-                    required: "Please enter image",
-                  })}
-                />
-                {errors.image && (
-                  <div className="mt-1 text-red-500 text-sm">
-                    {errors.image.message}
-                  </div>
-                )}
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="category"
-                  className="block mb-1 text-sm text-gray-600"
-                >
-                  Category
-                </label>
-                <select
-                  id="category"
-                  className="block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  {...register("category", {
-                    required: "Please select a category",
-                  })}
-                >
-                  <option value="">Select a category</option>
-                  <option value="Center Table">Center Table</option>
-                  <option value="Side Table">Side Table</option>
-                  <option value="Dining Table">Dining Table</option>
-                  <option value="Chair">Chair</option>
-                  <option value="Bed">Bed</option>
-                  <option value="Sofa">Sofa</option>
-                  <option value="Puffy">Puffy</option>
-                  <option value="Nested Table">Nested Table</option>
-                  <option value="Computer Table">Computer Table</option>
-                </select>
-                {errors.category && (
-                  <div className="mt-1 text-red-500 text-sm">
-                    {errors.category.message}
-                  </div>
-                )}
-              </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="brand"
-                  className="block mb-1 text-sm text-gray-600"
-                >
-                  Brand
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  id="brand"
-                  {...register("brand", {
-                    required: "Please enter brand",
-                  })}
-                />
-                {errors.brand && (
-                  <div className="mt-1 text-red-500 text-sm">
-                    {errors.brand.message}
-                  </div>
-                )}
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="countInStock"
-                  className="block mb-1 text-sm text-gray-600"
-                >
-                  Count in Stock
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  id="countInStock"
-                  {...register("countInStock", {
-                    required: "Please enter countInStock",
-                  })}
-                />
-                {errors.countInStock && (
-                  <div className="mt-1 text-red-500 text-sm">
-                    {errors.countInStock.message}
-                  </div>
-                )}
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="description"
-                  className="block mb-1 text-sm text-gray-600"
-                >
-                  Description
-                </label>
-                <textarea
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-                  id="description"
-                  {...register("description", {
-                    required: "Please enter description",
-                  })}
-                />
-                {errors.description && (
-                  <div className="mt-1 text-red-500 text-sm">
-                    {errors.description.message}
-                  </div>
-                )}
-              </div>
               <div className="mb-4">
                 <button
                   disabled={loadingUpdate}
@@ -346,6 +227,6 @@ const AdminProductEditScreen = () => {
   );
 };
 
-AdminProductEditScreen.auth = { adminOnly: true };
+AdminUserEditScreen.auth = { adminOnly: true };
 
-export default AdminProductEditScreen;
+export default AdminUserEditScreen;

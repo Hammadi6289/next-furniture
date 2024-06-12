@@ -9,8 +9,11 @@ import axios from "axios";
 //import { useRouter } from "next/router";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Link from "next/link";
 
-export default function Home({ products }) {
+export default function Home({ products, featuredProducts }) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const addToCartHandler = async (product) => {
