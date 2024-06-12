@@ -10,6 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DropdownLink from "./DropdownLink";
 import Cookies from "js-cookie";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import { SearchIcon } from "@heroicons/react/outline";
 
 export default function Layout({ title, children }) {
   const { status, data: session } = useSession();
@@ -26,6 +28,13 @@ export default function Layout({ title, children }) {
     dispatch({ type: "CART_RESET" });
     signOut({ callbackUrl: "/login" });
   };
+  const [query, setQuery] = useState("");
+
+  const router = useRouter();
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
 
   return (
     <>
@@ -40,20 +49,42 @@ export default function Layout({ title, children }) {
       <div className="flex min-h-screen flex-col justify-between bg-gray-100">
         <header className="bg-gradient-to-r from-green-700 to-yellow-500 shadow-lg">
           <nav className="container mx-auto flex items-center justify-between py-4 px-6">
-            <Link href="/" passHref>
-              <div className="flex items-center">
-                <Image
-                  src="/images/logo_for_mr_furniture.png"
-                  alt="Mr. Furniture Logo"
-                  width={100}
-                  height={100}
-                  className="hover:opacity-80 transition duration-300 rounded-full"
-                />
-                <h1 className="text-white text-2xl font-bold ml-4">
-                  Mr. Furniture
-                </h1>
-              </div>
-            </Link>
+            <div className="flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-8">
+              <Link href="/" passHref>
+                <div className="flex items-center mb-4 md:mb-0">
+                  <Image
+                    src="/images/logo_for_mr_furniture.png"
+                    alt="Mr. Furniture Logo"
+                    width={100}
+                    height={100}
+                    className="hover:opacity-80 transition duration-300 rounded-full"
+                  />
+                  <h1 className="text-white text-2xl font-bold ml-4">
+                    Mr. Furniture
+                  </h1>
+                </div>
+              </Link>
+              <form
+                onSubmit={submitHandler}
+                className="w-full md:w-auto flex justify-center items-center"
+              >
+                <div className="relative flex w-full max-w-md">
+                  <input
+                    onChange={(e) => setQuery(e.target.value)}
+                    type="text"
+                    className="w-full md:w-96 p-4 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition duration-300"
+                    placeholder="Search products"
+                  />
+                  <button
+                    className="flex items-center justify-center p-2 bg-amber-400 text-black rounded-r-md transition duration-300 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    type="submit"
+                    id="button-addon2"
+                  >
+                    <SearchIcon className="h-5 w-5" />
+                  </button>
+                </div>
+              </form>
+            </div>
 
             <div className="flex items-center space-x-4">
               {/* Cart Link */}

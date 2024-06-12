@@ -121,3 +121,20 @@
     2. build new product api
     3. add handler for delete
     4. implement delete api
+28. List Users For Admin
+    1. create users page
+    2. create users api
+    3. use api in page
+29. Create And Delete Users
+    1. add create User button
+    2. build new User api
+    3. add handler for delete
+    4. implement delete api
+30. Add Carousel
+    1. create featured products
+    2. feed carousel data
+    3. show popular products
+31. Create Search Page
+    1. create filters
+    2. list products
+    3. show filters
