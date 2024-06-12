@@ -1,4 +1,11 @@
 # NextJS Tailwind Ecommerce website for a Furniture Showroom
+![catalogues](https://github.com/Hammadi6289/next-furniture/assets/87120251/3b3758b8-35f8-4397-91fe-932910ffb961)
+![dashboard](https://github.com/Hammadi6289/next-furniture/assets/87120251/ba10e9eb-5f44-4a2d-9b7d-11a53529bfcf)
+![heroNav](https://github.com/Hammadi6289/next-furniture/assets/87120251/232c0855-25f8-4c62-a40b-98280c19311d)
+![orderHistory](https://github.com/Hammadi6289/next-furniture/assets/87120251/c636ef7f-9875-477a-807a-cd8040bbe237)
+![searchButton](https://github.com/Hammadi6289/next-furniture/assets/87120251/92e67d4f-1804-4d0d-aa92-7daa4df0e546)
+![signup](https://github.com/Hammadi6289/next-furniture/assets/87120251/d96f96f3-755e-478d-a626-1168db3dba61)
+![users](https://github.com/Hammadi6289/next-furniture/assets/87120251/0aa65fc2-c094-4a12-8935-784aef65120a)
 
 ## Actions
 
