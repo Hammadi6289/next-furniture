@@ -202,7 +202,7 @@ export default function Layout({ title, children }) {
 
         <footer className="flex h-16 justify-center items-center shadow-inner bg-green-900 p-12">
           <p className="text-white text-sm">
-            © 2024 Mr.Furniture Pvt Limited. All rights reserved.
+            © 2026 Mr.Furniture. All rights reserved.
           </p>
         </footer>
       </div>
